@@ -16,3 +16,6 @@ deletetask(take in TaskName(ignore case), if TaskName in tasks, clear TaskName?)
 
 
 still don't know how to display as a weekly calendar for users.
+
+hello
+whats up
