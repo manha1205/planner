@@ -20,5 +20,4 @@ deletetask(take in TaskName(ignore case), if TaskName in tasks, clear TaskName?)
 
 still don't know how to display as a weekly calendar for users.
 
-//wrote this up on vscode as a txtfile, don’t have a team member was hoping to work on my own. 
 
