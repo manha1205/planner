@@ -1,5 +1,4 @@
 import java.time.LocalDateTime;
-import java.util.Scanner;
 
 public class task{
     String title;
@@ -13,16 +12,16 @@ task(){
     this.isCompleted = false;
 }
 // getters for accessing(reading) each variable
-public String gettitle(String title){
+public String gettitle(){
     return title;
 }
-public String getdescription(String description){
+public String getdescription(){
     return description;
 }
-public LocalDateTime getDueDate(LocalDateTime DueDate){
+public LocalDateTime getDueDate(){
     return DueDate;
 }
-public boolean getisCompleted(boolean isCompleted){
+public boolean getisCompleted(){
     return isCompleted;
 }
 
@@ -33,5 +32,15 @@ public void settitle(String title){
         
     }
     this.title = title;
+}
+public void setDescription(String description){
+    this.description = description;
+
+}
+public void setDueDate(LocalDateTime DueDate){
+    this.DueDate = DueDate;
+}
+public void setisCompleted(boolean isCompleted){
+    this.isCompleted = isCompleted;
 }
 }
