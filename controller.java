@@ -1,7 +1,9 @@
 import java.util.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class controller {
-    private List<task> tasks = new ArrayList<>();
+    private List<Task> tasks = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
     public void run(){
@@ -13,14 +15,14 @@ public class controller {
             scanner.nextLine();
             switch(choice){
                 case 1:
-                addtask();
+                addTask();
                 break;
                 case 2:
-                edittask();
+                editTask();
                 break;
-                // case 3:
-                // displayTasks();
-                // break;
+                case 3:
+                displayTasks();
+                break;
                 case 4:
                 running = false;
                 System.out.print("Bye Bye");
@@ -28,17 +30,27 @@ public class controller {
 
                 default:
                 System.out.println("Invalid input!");
-
             }
         }
      
     }
-    private void addtask(){
-        System.out.println(" hello");
+    private void addTask(){  
+        System.out.println(" Task name: (Enter when done)");
+        String title = scanner.nextLine();
+        Task task = new Task();
+        try{
+        task.settitle(title);}
+        catch(IllegalArgumentException e){
+            System.out.println("Error" + e.getMessage());
+         }
+         System.out.println("Enter date: ");
+          
+
+        tasks.add(task);
 
     }
-    private void edittask(){
-        return;
+    private void editTask(){
+       return;
     }
 
    
