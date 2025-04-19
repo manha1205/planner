@@ -1,11 +1,11 @@
 import java.time.LocalDateTime;
-
-public class Task{
+//task class
+public class task{
     String title;
     String description;
     boolean isCompleted;
     LocalDateTime DueDate;
-Task(){
+task(){
     this.title = title;
     this.description = description;
     this.DueDate = DueDate;
@@ -27,13 +27,12 @@ public boolean getisCompleted(){
 
 //setters: use these to modify items in task
 public void settitle(String title){
-    if (title.trim().isEmpty()){       
-        throw new IllegalArgumentException("Enter a valid title!");
-       }
-       this.title = title;   
+    if(title== null){
+        System.out.println("Not a valid title");
+        
     }
-    
-
+    this.title = title;
+}
 public void setDescription(String description){
     this.description = description;
 
