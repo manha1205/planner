@@ -1,6 +1,9 @@
+import com.sun.source.util.TaskListener;
 import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import javax.swing.text.DateFormatter;
 
 public class controller {
     private List<Task> tasks = new ArrayList<>();
@@ -43,13 +46,29 @@ public class controller {
         catch(IllegalArgumentException e){
             System.out.println("Error" + e.getMessage());
          }
-         System.out.println("Enter date: ");
-          
+         System.out.println("Enter date: (MM/dd/yyyy HH:mm)");
+         DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+
+      
+         try {
+             System.out.println("Enter due date:  (MM/dd/yyyy HH:mm)");
+             String input = scanner.nextLine();
+             LocalDateTime dateTime = LocalDateTime.parse(input, format);
+            task.setDueDate(dateTime);
+         } catch (DateTimeParseException e) {
+            System.out.println("Not a valid format! Try again. MM/dd/yyyy HH:mm");
+         }
+        System.out.println("Enter a description");
+        String description = scanner.nextLine();
+        task.setDescription(description);
 
         tasks.add(task);
 
     }
     private void editTask(){
+        //display
+        //edit options
+    
        return;
     }
 
