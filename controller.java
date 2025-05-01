@@ -21,7 +21,7 @@ public class controller {
                 addTask();
                 break;
                 case 2:
-                editTask();
+                runEditTask();
                 break;
                 case 3:
                 displayTasks();
@@ -63,11 +63,21 @@ public class controller {
         task.setDescription(description);
 
         tasks.add(task);
-
     }
-    private void editTask(){
-        //display
-        //edit options
+    public void displayTasks(){
+        for (Task task: tasks){
+            System.out.println("Title "+ task.gettitle()+"\n");
+            System.out.println("Task details: "+ task.getdescription());
+            System.out.println("Due date: "+ task.getDueDate());
+        }
+    }
+
+    public void editTask(int index, Scanner scan){
+        try {
+            System.out.println("Enter index of the task to be edited: ");
+            index = scan.nextInt();
+        } catch (Exception e) {
+        }
     }
 
    
