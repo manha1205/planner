@@ -1,4 +1,5 @@
 import com.sun.source.util.TaskListener;
+import java.awt.image.IndexColorModel;
 import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -76,8 +77,14 @@ public class controller {
         try {
             System.out.println("Enter index of the task to be edited: ");
             index = scan.nextInt();
+            if (index< 0 || index > tasks.size()){
+                System.out.println("Wrong input!");
+                return;
+            }
         } catch (Exception e) {
+            System.out.println("Invalid input! Please enter a number.");
         }
+        
     }
 
    
