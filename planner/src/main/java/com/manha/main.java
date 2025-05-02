@@ -1,3 +1,4 @@
+package com.manha;
 import java.util.*;
 
 public class main{
