@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task Planner</title>
+</head>
+<body>
+  <h1>Task Planner</h1>
+
+  <form id="taskForm">
+    <input type="text" id="title" placeholder="Title" required />
+    <input type="text" id="description" placeholder="Description" required />
+    <input 
+        type="datetime-local" 
+        id="dueDate" 
+        onkeydown="return false;" 
+        title="Use the calendar and clock to pick a date and time"
+    />
+
+    <label>
+        <input type="checkbox"  id="completed" />
+        Completed
+    </label>
+    <button type="submit">Add Task</button>
+  </form>
+
+  <h2>Task List</h2>
+  <ul id="taskList"></ul>
+
+  <script>
+    const form = document.getElementById('taskForm');
+    const taskList = document.getElementById('taskList');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const dueDateRaw = document.getElementById('dueDate').value;
+      const dueDate = dueDateRaw === "" ? null : dueDateRaw;
+
+      const completed = document.getElementById('completed').checked;
+      console.log({ title, description, dueDate, completed });
+
+      const response = await fetch('/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            title, 
+            description,
+            dueDate,
+            completed
+        })
+      });
+
+      if (response.ok) {
+        loadTasks(); // refresh the list
+        form.reset();
+      } 
+        else {
+            const errorText = await response.text();
+            alert('Failed to add task:\n' + errorText);
+          }
+      });
+
+      async function loadTasks() {
+        const response = await fetch('/tasks');
+        const tasks = await response.json();
+        console.log("Loaded tasks:", tasks); // Add this
+        taskList.innerHTML = '';
+        tasks.forEach(task => {
+          const li = document.createElement('li');
+          li.textContent = `${task.title} — ${task.description} — Due: ${task.dueDate || 'N/A'} — ${task.completed ? '✅' : '❌'}`;
+          taskList.appendChild(li);
+        });
+      }
+
+    loadTasks(); // Load tasks on page load
+  </script>
+</body>
+</html>
+ 

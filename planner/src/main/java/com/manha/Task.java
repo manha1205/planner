@@ -3,16 +3,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 //task class
 public class Task{
-    String title;
-    String description;
+    private String title;
+    private String description;
     public boolean completed;
-    LocalDateTime DueDate;
-Task(){
-    this.title = title;
-    this.description = description;
-    this.DueDate = DueDate;
-    this.completed = false;
+    private LocalDateTime DueDate;
+public Task(){
+  
 }
+   public Task(String title, String description, LocalDateTime dueDate, boolean completed) {
+        this.title = title;
+        this.description = description;
+        this.DueDate = DueDate;
+        this.completed = completed;
+    }
+
 // getters for accessing(reading) each variable
 public String gettitle(){
     return title;

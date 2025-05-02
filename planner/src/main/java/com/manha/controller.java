@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-public class controller {
+public class Controller {
     private List<Task> tasks = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
