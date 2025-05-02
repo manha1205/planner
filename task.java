@@ -4,13 +4,13 @@ import java.time.format.DateTimeFormatter;
 public class Task{
     String title;
     String description;
-    boolean isCompleted;
+    public boolean completed;
     LocalDateTime DueDate;
 Task(){
     this.title = title;
     this.description = description;
     this.DueDate = DueDate;
-    this.isCompleted = false;
+    this.completed = false;
 }
 // getters for accessing(reading) each variable
 public String gettitle(){
@@ -22,9 +22,10 @@ public String getdescription(){
 public LocalDateTime getDueDate(){
     return DueDate;
 }
-public boolean getisCompleted(){
-    return isCompleted;
+public boolean isCompleted(){
+    return completed;
 }
+
 
 //setters: use these to modify items in task
 public void settitle(String title){
@@ -43,7 +44,7 @@ public void setDueDate(LocalDateTime DueDate){
 
     this.DueDate = DueDate;
 }
-public void setisCompleted(boolean isCompleted){
-    this.isCompleted = isCompleted;
+public void setCompleted(boolean isCompleted){
+    this.completed = completed;
 }
 }
