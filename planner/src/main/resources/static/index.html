@@ -12,8 +12,7 @@
   <form id="taskForm">
     <input type="text" id="title" placeholder="Title" required />
     <input type="text" id="description" placeholder="Description" required />
-    <input type="datetime-local" id="dueDate" onkeydown="return false;"
-      title="Use the calendar and clock to pick a date and time" />
+    <input type="datetime-local" id="dueDate" onkeydown="return true;" onfocus="this.showPicker()" />
 
     <label>
       <input type="checkbox" id="completed" />
@@ -39,11 +38,13 @@
       const description = document.getElementById('description').value;
       const dueDateRaw = document.getElementById('dueDate').value;
       const dueDate = dueDateRaw === "" ? null : dueDateRaw;
+
       const completed = document.getElementById('completed').checked;
+      console.log("CHECKBOX:", completed); //confirm it's true when checked
 
-      let response;
+
       const taskData = {title, description, dueDate, completed};
-
+      let response;
       if (editing) {
         response = await fetch(`/tasks/${encodeURIComponent(editingTitle)}`, {
           method: 'PUT',
@@ -74,16 +75,13 @@
       const tasks = await response.json();
       console.log("Loaded tasks:", tasks); // Add this
       taskList.innerHTML = '';
-      tasks.sort((a, b) => {
-        const dateA = new Date(a.dueDate);
-        const dateB = new Date(b.dueDate);
-        return dateA - dateB;
-      });
+      // tasks.sort((a, b) => {
+      //   const dateA = new Date(a.dueDate);
+      //   const dateB = new Date(b.dueDate);
+      //   return dateA - dateB;
+      // });
       tasks.forEach(task => {
         const li = document.createElement('li');
-
-        li.style.textDecoration = task.completed ? 'line-through' : 'none';
-        li.style.color = task.completed ? 'green' : 'black';
         li.innerHTML = `
           <span>${task.title} — ${task.description} — Due: ${task.dueDate || 'N/A'} —${task.completed ? '✅' : '❌'}</span>
           

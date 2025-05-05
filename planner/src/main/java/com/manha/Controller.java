@@ -127,13 +127,11 @@ public class Controller {
         System.out.println("Would you like to mark the task complete? Enter y or n");
         String done= scanner.nextLine().trim().toLowerCase();
         if (done.equals("y")){
-            task.completed = true;
-            task.setCompleted(task.completed);
+            task.setCompleted(true);
             System.out.println("Task successfully marked complete!");
         }
         else if(done.equals("n")){
-            task.completed = false;
-            task.setCompleted(task.completed);
+            task.setCompleted(false);
             System.out.println("Task marked incomplete!");
         }
       
