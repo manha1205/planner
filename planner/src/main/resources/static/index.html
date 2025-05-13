@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Task Planner</title>
 </head>
+
 <body>
   <h1>Task Planner</h1>
 
   <form id="taskForm">
     <input type="text" id="title" placeholder="Title" required />
     <input type="text" id="description" placeholder="Description" required />
-    <input 
-        type="datetime-local" 
-        id="dueDate" 
-        onkeydown="return false;" 
-        title="Use the calendar and clock to pick a date and time"
-    />
+    <input type="datetime-local" id="dueDate" onkeydown="return true;" onfocus="this.showPicker()" />
 
     <label>
-        <input type="checkbox"  id="completed" />
-        Completed
+      <input type="checkbox" id="completed" />
+      Completed
     </label>
     <button type="submit">Add Task</button>
   </form>
@@ -28,6 +25,10 @@
   <ul id="taskList"></ul>
 
   <script>
+
+    let editing = false;
+    let editingTitle = null;
+
     const form = document.getElementById('taskForm');
     const taskList = document.getElementById('taskList');
 
@@ -39,45 +40,84 @@
       const dueDate = dueDateRaw === "" ? null : dueDateRaw;
 
       const completed = document.getElementById('completed').checked;
-      console.log({ title, description, dueDate, completed });
+      console.log("CHECKBOX:", completed); //confirm it's true when checked
 
-      const response = await fetch('/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-            title, 
-            description,
-            dueDate,
-            completed
-        })
-      });
 
-      if (response.ok) {
-        loadTasks(); // refresh the list
-        form.reset();
-      } 
-        else {
-            const errorText = await response.text();
-            alert('Failed to add task:\n' + errorText);
-          }
-      });
-
-      async function loadTasks() {
-        const response = await fetch('/tasks');
-        const tasks = await response.json();
-        console.log("Loaded tasks:", tasks); // Add this
-        taskList.innerHTML = '';
-        tasks.forEach(task => {
-          const li = document.createElement('li');
-          li.textContent = `${task.title} — ${task.description} — Due: ${task.dueDate || 'N/A'} — ${task.completed ? '✅' : '❌'}`;
-          taskList.appendChild(li);
+      const taskData = {title, description, dueDate, completed};
+      let response;
+      if (editing) {
+        response = await fetch(`/tasks/${encodeURIComponent(editingTitle)}`, {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(taskData)
+        });
+        editing = false;
+        editingTitle = null;
+        document.querySelector('button[type="submit"]').textContent = "Add Task";
+      } else {
+        response = await fetch('/tasks', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(taskData)
         });
       }
+      if (response.ok) {
+        form.reset();
+        loadTasks();
+      } else {
+        const errorText = await response.text();
+        alert('Failed to save task:\n' + errorText);
+      }
+    });
+
+    async function loadTasks() {
+      const response = await fetch('/tasks');
+      const tasks = await response.json();
+      console.log("Loaded tasks:", tasks); // Add this
+      taskList.innerHTML = '';
+      // tasks.sort((a, b) => {
+      //   const dateA = new Date(a.dueDate);
+      //   const dateB = new Date(b.dueDate);
+      //   return dateA - dateB;
+      // });
+      tasks.forEach(task => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${task.title} — ${task.description} — Due: ${task.dueDate || 'N/A'} —${task.completed ? '✅' : '❌'}</span>
+          
+          <button onclick="deleteTask('${task.title}')">Delete</button>
+          <button onclick = "editTask('${task.title}')">Edit</button>
+           `;
+        taskList.appendChild(li);
+      });
+    }
+    async function deleteTask(title) {
+      await fetch(`/tasks/${encodeURIComponent(title)}`, {
+        method: 'DELETE'
+      });
+      loadTasks();
+    }
+    async function editTask(title) {
+      const response = await fetch(`/tasks`);
+      const tasks = await response.json();
+      const task = tasks.find(t => t.title === decodeURIComponent(title));
+      if (!task) return alert("Task not found.");
+
+      // Populate form
+      document.getElementById('title').value = task.title;
+      document.getElementById('description').value = task.description;
+      document.getElementById('dueDate').value = task.dueDate || '';
+      document.getElementById('completed').checked = task.completed;
+
+      editing = true;
+      editingTitle = task.title;
+
+      document.querySelector('button[type="submit"]').textContent = "Update Task";
+    }
+
 
     loadTasks(); // Load tasks on page load
   </script>
 </body>
+
 </html>
- 
